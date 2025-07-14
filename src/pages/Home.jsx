@@ -7,13 +7,10 @@ import HeroComponent from '../components/HeroComponent';
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Home() {
+  console.log('BASE_URL:', BASE_URL);
   const [homePageData, setHomePageData] = useState([]);
   const [heroImage, setHeroImage] = useState(null);
   const [news, setNews] = useState(null);
-
-  // const [imageNewsComponentOne, setImageNewsComponentOne] = useState(null);
-  // const [imageNewsComponentTwo, setImageNewsComponentTwo] = useState(null);
-  // const [imageNewsComponentThree, setImageNewsComponentThree] = useState(null);
 
   // GET home page data
   useEffect(() => {
