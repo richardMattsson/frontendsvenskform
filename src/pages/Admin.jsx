@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './admin.css';
 import Button from '../components/Button';
 import { useParams } from 'react-router-dom';
-import HomeAdmin from './HomeAdmin';
+
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Admin() {
@@ -285,7 +285,6 @@ function Admin() {
       {/* Hemsida */}
       {page === 'home' && (
         <>
-          <HomeAdmin />
           <section className="newsImageOne-container">
             <h1>Byt bild Hero hemsida</h1>
             <form onSubmit={handleSubmitImage} className="newsImageOne-form">
