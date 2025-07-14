@@ -3,6 +3,7 @@ import './admin.css';
 import Button from '../components/Button';
 import { useParams } from 'react-router-dom';
 import HomeAdmin from './HomeAdmin';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Admin() {
   const { page } = useParams();
@@ -38,7 +39,7 @@ function Admin() {
     formData.append('file', homeHeroImage); // image från e.target.files[0]
 
     try {
-      const response = await fetch('/api/upload', {
+      const response = await fetch(`${BASE_URL}/api/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -54,7 +55,7 @@ function Admin() {
   const updateHomePageData = async (event) => {
     event.preventDefault();
 
-    const response = await fetch('/api/homePageData', {
+    const response = await fetch(`${BASE_URL}/api/homePageData`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ function Admin() {
     formData.append('file', projectsHeroImage); // image från e.target.files[0]
 
     try {
-      const response = await fetch('/api/uploadImageProjectsHero', {
+      const response = await fetch(`${BASE_URL}/api/uploadImageProjectsHero`, {
         method: 'POST',
         body: formData,
       });
@@ -134,7 +135,7 @@ function Admin() {
     formData.append('file', archivesHeroImage); // image från e.target.files[0]
 
     try {
-      const response = await fetch('/api/uploadImageArchivesHero', {
+      const response = await fetch(`${BASE_URL}/api/uploadImageArchivesHero`, {
         method: 'POST',
         body: formData,
       });
@@ -151,7 +152,7 @@ function Admin() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('/api/getNews');
+        const response = await fetch(`${BASE_URL}/api/getNews`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch news');
@@ -180,7 +181,7 @@ function Admin() {
 
     console.log(formData);
 
-    const response = await fetch('/api/postNews', {
+    const response = await fetch(`${BASE_URL}/api/postNews`, {
       method: 'POST',
       // headers: {
       //   'Content-Type': 'application/json',
@@ -226,7 +227,7 @@ function Admin() {
       formData.append('file', newsToUpdate.filename);
     }
 
-    const response = await fetch('/api/updateNews', {
+    const response = await fetch(`${BASE_URL}/api/updateNews`, {
       method: 'PATCH',
       body: formData,
     });
@@ -260,7 +261,7 @@ function Admin() {
   // Raderar en nyhet
   async function deleteNews(id) {
     try {
-      const response = await fetch(`/api/deleteNews/${Number(id)}`, {
+      const response = await fetch(`${BASE_URL}/api/deleteNews/${Number(id)}`, {
         method: 'DELETE',
       });
 
@@ -281,7 +282,7 @@ function Admin() {
     <>
       <h1>Admin</h1>
 
-      {/* Byt bild Hero Hemsida */}
+      {/* Hemsida */}
       {page === 'home' && (
         <>
           <HomeAdmin />
@@ -341,7 +342,7 @@ function Admin() {
         </>
       )}
 
-      {/* Byt bild Hero Pågående projekt */}
+      {/* Pågående projekt */}
       {page === 'project' && (
         <section className="newsImageOne-container">
           <h1>Byt bild Hero Pågående projekt</h1>
@@ -534,7 +535,7 @@ function Admin() {
           </section>
         </>
       )}
-
+      {/* Arkiv */}
       {page === 'archive' && (
         <>
           <section className="newsImageOne-container">
@@ -564,13 +565,13 @@ function Admin() {
           </section>
         </>
       )}
-
+      {/* Om oss */}
       {page === 'about' && (
         <>
           <h1>Om oss</h1>
         </>
       )}
-
+      {/* Kontakt */}
       {page === 'contact' && (
         <>
           <h1>Kontakt</h1>

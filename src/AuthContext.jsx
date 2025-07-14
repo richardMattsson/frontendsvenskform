@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 const AuthContext = createContext();
 
@@ -9,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch('/api/profile', {
+        const res = await fetch(`${BASE_URL}/api/profile`, {
           credentials: 'include', // 🧠 viktigt för cookies
         });
 
@@ -21,7 +22,6 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
         }
       } catch (error) {
-        console.log('appen startar?');
         console.error(error);
         setUser(null);
       }

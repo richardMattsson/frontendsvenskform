@@ -1,4 +1,5 @@
 import { useState } from 'react';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function CreateAccount({ setShowLogin }) {
   const [email, setEmail] = useState('');
@@ -7,7 +8,7 @@ function CreateAccount({ setShowLogin }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const response = await fetch('/api/createAccount', {
+    const response = await fetch(`${BASE_URL}/api/createAccount`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),

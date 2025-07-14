@@ -1,5 +1,6 @@
 import Button from './Button';
 import './newscomponent.css';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function NewsLarge({ imageSrc, title, date, description, url }) {
   const formatUrl = (url) => {
@@ -14,7 +15,7 @@ function NewsLarge({ imageSrc, title, date, description, url }) {
       <div className="news-section-large">
         <div className="news-image-container">
           <img
-            src={`http://localhost:8080/${imageSrc.replace(/\\/g, '/')}`}
+            src={`${BASE_URL}/${imageSrc.replace(/\\/g, '/')}`}
             alt=""
             style={{ maxWidth: '100%' }}
           />

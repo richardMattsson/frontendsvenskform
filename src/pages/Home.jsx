@@ -4,6 +4,7 @@ import './home.css';
 import NewsComponent from '../components/NewsComponent';
 import NewsLarge from '../components/NewsLarge';
 import HeroComponent from '../components/HeroComponent';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Home() {
   const [homePageData, setHomePageData] = useState([]);
@@ -18,7 +19,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('/api/homePageData', {
+        const response = await fetch(`${BASE_URL}/api/homePageData`, {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -36,7 +37,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('/api/getUpload');
+        const response = await fetch(`${BASE_URL}/api/getUpload`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch hero image');
@@ -49,63 +50,12 @@ function Home() {
       }
     })();
   }, []);
-  // GET image news component 1
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await fetch('/api/getImageNewsComponentOne');
-
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch newsComponent image');
-  //       }
-  //       const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
-
-  //       setImageNewsComponentOne(data.filepath);
-  //     } catch (error) {
-  //       console.error('Failed to fetch newsComponent image', error);
-  //     }
-  //   })();
-  // }, []);
-  //GET image news component 2
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await fetch('/api/getImageNewsComponentTwo');
-
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch newsComponent image');
-  //       }
-  //       const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
-
-  //       setImageNewsComponentTwo(data.filepath);
-  //     } catch (error) {
-  //       console.error('Failed to fetch newsComponent image', error);
-  //     }
-  //   })();
-  // }, []);
-  //GET image news component 3
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await fetch('/api/getImageNewsComponentThree');
-
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch newsComponent image');
-  //       }
-  //       const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
-
-  //       setImageNewsComponentThree(data.filepath);
-  //     } catch (error) {
-  //       console.error('Failed to fetch newsComponent image', error);
-  //     }
-  //   })();
-  // }, []);
 
   // GET news
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('/api/getNews');
+        const response = await fetch(`${BASE_URL}/api/getNews`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch news');
@@ -124,7 +74,7 @@ function Home() {
     <>
       {heroImage && (
         <HeroComponent
-          imageUrl={`http://localhost:8080${heroImage}`}
+          imageUrl={`${BASE_URL}${heroImage}`}
           title={'Välkommen'}
         />
       )}

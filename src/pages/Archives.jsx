@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import HeroComponent from '../components/HeroComponent';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Archives() {
   const [imagePath, setImagePath] = useState(null);
@@ -7,7 +8,7 @@ function Archives() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('/api/getImageArchivesHero');
+        const response = await fetch(`${BASE_URL}/api/getImageArchivesHero`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch hero image');
@@ -26,7 +27,7 @@ function Archives() {
       <h1>Arkiv</h1>
       {imagePath && (
         <HeroComponent
-          imageUrl={`http://localhost:8080${imagePath}`}
+          imageUrl={`${BASE_URL}${imagePath}`}
           title={'Välkommen'}
         />
       )}

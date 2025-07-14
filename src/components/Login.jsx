@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../AuthContext';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 // import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +13,7 @@ export default function Login({ setShowLogin }) {
 
   async function handleLogin(e) {
     e.preventDefault();
-    const res = await fetch('/api/login', {
+    const res = await fetch(`${BASE_URL}/api/login`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

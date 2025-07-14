@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import HeroComponent from '../components/HeroComponent';
 import NewsLarge from '../components/NewsLarge';
 import NewsComponent from '../components/NewsComponent';
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function News() {
   // const [imagePath, setImagePath] = useState(null);
@@ -10,8 +11,7 @@ function News() {
   const { id } = useParams();
   const [selectedNews, setSelectedNews] = useState(null);
 
-  console.log(id);
-
+  // hämtar hero bild
   // useEffect(() => {
   //   (async () => {
   //     try {
@@ -32,7 +32,7 @@ function News() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('/api/getNews');
+        const response = await fetch(`${BASE_URL}/api/getNews`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch news');
@@ -88,17 +88,6 @@ function News() {
           />
         ))
       )}
-
-      {/* {news &&
-        news.map((n) => (
-          <NewsLarge
-            key={n.id}
-            imageSrc={n.filepath}
-            title={n.title}
-            date={n.date}
-            description={n.description}
-          />
-        ))} */}
     </>
   );
 }
