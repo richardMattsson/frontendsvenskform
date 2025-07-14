@@ -1,5 +1,5 @@
 import {
-  createHashRouter,
+  createBrowserRouter,
   Outlet,
   RouterProvider,
   useLocation,
@@ -38,7 +38,7 @@ function Root() {
 
 function Router() {
   const { user } = useAuth();
-  const router = createHashRouter([
+  const router = createBrowserRouter([
     {
       children: [
         { element: <Home />, path: '/' },
