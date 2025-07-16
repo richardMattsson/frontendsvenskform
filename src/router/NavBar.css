@@ -13,6 +13,9 @@
 .logo {
   /* padding: 25px; */
   /* margin-top: 2em; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navbar-header {
@@ -24,7 +27,20 @@
 }
 .navbar {
   display: flex;
-  justify-content: end;
+  justify-content: start;
+}
+
+.hamburger {
+  font-size: 2rem;
+  height: 45px;
+  margin: 0 2vw;
+  padding: 5px;
+  background: none;
+  border: 1px solid black;
+  border-radius: 7px;
+  color: black;
+  display: none; /* Dölj på större skärmar */
+  cursor: pointer;
 }
 .nav-links {
   display: flex;
@@ -62,9 +78,17 @@
 }
 
 @media (max-width: 600px) {
+  .hamburger {
+    display: flex;
+    justify-content: center;
+  }
   .nav-links {
     gap: 5px;
 
     flex-direction: column;
+    display: none;
+  }
+  .nav-links.show {
+    display: flex;
   }
 }

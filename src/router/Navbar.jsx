@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <section className="navbar-section">
       <header className="navbar-header">
@@ -9,9 +11,18 @@ function Navbar() {
             {/* <li className="navlink">Hem</li> */}
             <img src="/logo_black.png" alt="Logo" width={160} />
           </Link>
+
+          <button
+            className="hamburger"
+            onClick={() => setIsOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            <img src="/hamburger-menu-svgrepo-com.svg" alt="" />
+          </button>
         </div>
+
         <nav className="navbar">
-          <ul className="nav-links">
+          <ul className={`nav-links ${isOpen ? 'show' : ''}`}>
             <Link to="/">
               <li className="navlink">Hem</li>
             </Link>
