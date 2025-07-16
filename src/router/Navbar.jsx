@@ -17,7 +17,11 @@ function Navbar() {
             onClick={() => setIsOpen((prev) => !prev)}
             aria-label="Toggle menu"
           >
-            <img src="/hamburger-menu-svgrepo-com.svg" alt="" />
+            <img
+              src="/hamburger-menu-svgrepo-com.svg"
+              alt=""
+              style={{ maxWidth: '100%' }}
+            />
           </button>
         </div>
 
