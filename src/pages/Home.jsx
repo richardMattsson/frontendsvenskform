@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import './home.css';
 import NewsComponent from '../components/NewsComponent';
 import NewsLarge from '../components/NewsLarge';
 import HeroComponent from '../components/HeroComponent';
+import Button from '../components/Button';
+
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Home() {
-  console.log('BASE_URL:', BASE_URL);
-  const [homePageData, setHomePageData] = useState([]);
-  const [heroImage, setHeroImage] = useState(null);
+  // console.log('BASE_URL:', BASE_URL);
+  // const [homePageData, setHomePageData] = useState([]);
+  // const [heroImage, setHeroImage] = useState(null);
   const [news, setNews] = useState(null);
+  const [heroData, setHeroData] = useState(null);
 
   // GET home page data
   useEffect(() => {
@@ -23,27 +26,48 @@ function Home() {
           throw new Error('Failed to fetch homePage data');
         }
 
-        const data = await response.json();
-        setHomePageData(data);
+        // const data = await response.json();
+        // console.log(data);
+        // setHomePageData(data);
       } catch (error) {
         console.error('Logout failed', error);
       }
     })();
   }, []);
   // GET image hero
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await fetch(`${BASE_URL}/api/getUpload`);
+
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch hero image');
+  //       }
+  //       const data = await response.json();
+  //       console.log('images: ', data.filepath);
+  //       setHeroImage(data.filepath);
+  //     } catch (error) {
+  //       console.error('Failed to fetch hero image', error);
+  //     }
+  //   })();
+  // }, []);
+
+  // GET hero data
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(`${BASE_URL}/api/getUpload`);
+        const response = await fetch(`${BASE_URL}/api/getHeroLandingPage`);
 
         if (!response.ok) {
-          throw new Error('Failed to fetch hero image');
+          throw new Error('Failed to fetch hero data');
         }
         const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
 
-        setHeroImage(data.filepath);
+        setHeroData(data);
+        console.log('herodata: ', data);
+        console.log('hero data imagelink', data[0].filepath);
       } catch (error) {
-        console.error('Failed to fetch hero image', error);
+        console.error('Failed to fetch hero data', error);
       }
     })();
   }, []);
@@ -60,52 +84,98 @@ function Home() {
         const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
 
         setNews(data);
-        console.log('newsArray: ', data);
+        // console.log('newsArray: ', data);
       } catch (error) {
         console.error('Failed to fetch news', error);
       }
     })();
   }, []);
 
+  // const normalizedPath = image.filepath.replace(/\\/g, '/');
+
+  const scrollRef = useRef(null);
+
+  const scrollLeft = () => {
+    scrollRef.current.scrollLeft -= scrollRef.current.offsetWidth;
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollLeft += scrollRef.current.offsetWidth;
+  };
+
   return (
     <>
-      {heroImage && (
+      {heroData && (
         <HeroComponent
-          imageUrl={`${BASE_URL}${heroImage}`}
-          title={'Välkommen'}
+          imageUrl={`${BASE_URL}/${heroData[0].filepath.replace(/\\/g, '/')}`}
+          title={heroData[0].title}
+          description={heroData[0].paragraph}
+          buttonText={heroData[0].buttonText}
+          textColor={heroData[0].textColor}
         />
       )}
-
-      {homePageData &&
-        homePageData.map((data) => {
+      {heroData &&
+        heroData.map((data) => {
           return (
             <React.Fragment key={data.id}>
-              <div className="homePageData-container">
-                <h1>{data.title}</h1>
-                <h3>{data.subtitle}</h3>
-                <p>{data.paragraph}</p>
-              </div>
+              <section className="homePageData-section">
+                <div className="homePageData-container">
+                  <h1>{data.title}</h1>
+                  <h3>{data.subtitle}</h3>
+                  <p>{data.paragraph}</p>
+                </div>
+              </section>
             </React.Fragment>
           );
         })}
+      <section style={{ padding: '0 3vw' }}>
+        <h1>Nyheter</h1>
+      </section>
 
-      <div className="news-container">
-        {news &&
-          news.map((n) => {
-            return (
-              <NewsComponent
-                key={n.id}
-                imageUrl={n.filepath}
-                color={n.textcolor}
-                title={n.title}
-                date={n.date}
-                description={n.description}
-                link={`/news/${n.id}`}
-              />
-            );
-          })}
-      </div>
-      {news &&
+      <section className="news-section">
+        <button onClick={scrollLeft} className="scroll-button left">
+          ◀
+        </button>
+
+        <div className="news-container" ref={scrollRef}>
+          {news &&
+            news.map((n) => {
+              return (
+                <NewsComponent
+                  key={n.id}
+                  imageUrl={n.filepath}
+                  color={n.textcolor}
+                  title={n.title}
+                  date={n.date}
+                  description={n.description}
+                  link={`/news/${n.id}`}
+                />
+              );
+            })}
+        </div>
+
+        <button onClick={scrollRight} className="scroll-button right">
+          ▶
+        </button>
+      </section>
+
+      <section className="about-section">
+        <h1>Om oss</h1>
+        <img
+          className="about-img"
+          src="/Illustration_4_RGB.jpg"
+          alt="om oss bild"
+        />
+
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam,
+          possimus. Veniam tenetur incidunt placeat quasi voluptatem quaerat
+          quae natus? Delectus ipsa fuga aperiam sed officiis maiores nobis,
+          explicabo dolorem excepturi?
+        </p>
+        <Button text={'Läs mer'} type={'button'} />
+      </section>
+      {/* {news &&
         news.map((n) => {
           return (
             <NewsLarge
@@ -117,7 +187,7 @@ function Home() {
               url={n.url}
             />
           );
-        })}
+        })} */}
     </>
   );
 }

@@ -16,6 +16,7 @@ function Admin() {
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [paragraph, setParagraph] = useState('');
+  const [buttonText, setButtonText] = useState('');
 
   const [titleNews, setTitleNews] = useState('');
   const [dateNews, setDateNews] = useState('');
@@ -49,6 +50,39 @@ function Admin() {
       alert('Du har laddat upp en bild.');
     } catch (error) {
       console.error('Upload failed:', error);
+    }
+  };
+
+  const postHeroLandingPage = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('subtitle', subtitle);
+    formData.append('paragraph', paragraph);
+    formData.append('buttonText', buttonText);
+    formData.append('file', imageNews);
+    formData.append('textColor', textColor);
+
+    console.log(formData);
+
+    const response = await fetch(`${BASE_URL}/api/uploadHeroLandingPage`, {
+      method: 'POST',
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // },
+      //credentials: 'include', // 🧠 om du använder cookies för auth
+      body: formData,
+    });
+
+    if (response.ok) {
+      console.log('Du har lagt till en nyhet');
+      alert('Du har lagt till en nyhet');
+    } else {
+      console.error('Misslyckades att lägga till en nyhet');
+      alert(
+        'Något gick fel med att lägga upp nyheten. Se till att alla fält är ifyllda.'
+      );
     }
   };
 
@@ -333,6 +367,54 @@ function Admin() {
                 placeholder="Beskrivning..."
                 value={paragraph}
                 onChange={(e) => setParagraph(e.target.value)}
+              />
+              <Button type={'submit'} text={'Skicka'} />
+              {/* <button type="submit">Skicka</button> */}
+            </form>
+          </section>
+          <section className="newsImageOne-container">
+            <h1>Posta till hero Landing page</h1>
+            <form onSubmit={postHeroLandingPage} className="homePageData-form">
+              <label>Rubrik:</label>
+              <input
+                className="input-admin"
+                placeholder="Rubrik"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <label>Underrubrik:</label>
+              <input
+                className="input-admin"
+                placeholder="Underrubrik"
+                value={subtitle}
+                onChange={(e) => setSubtitle(e.target.value)}
+              />
+              <label>Textfärg:</label>
+              <select onChange={(e) => setTextColor(e.target.value)}>
+                <option value="black">Svart</option>
+                <option value="white">Vit</option>
+              </select>
+              <label>Beskrivning:</label>
+              <textarea
+                className="textarea-admin"
+                cols={30}
+                rows={10}
+                placeholder="Beskrivning..."
+                value={paragraph}
+                onChange={(e) => setParagraph(e.target.value)}
+              />
+              <label>Knapptext:</label>
+              <input
+                className="input-admin"
+                placeholder="Knapptext"
+                value={buttonText}
+                onChange={(e) => setButtonText(e.target.value)}
+              />
+              <label>Bild:</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageNews(e.target.files[0])}
               />
               <Button type={'submit'} text={'Skicka'} />
               {/* <button type="submit">Skicka</button> */}

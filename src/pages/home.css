@@ -11,15 +11,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: white;
 }
 .hero-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 80px;
-  margin-right: 80px;
+  margin: 0 5px;
 }
 
 .hero-button:hover {
@@ -29,9 +27,69 @@
 .homePageData-container {
   text-align: center;
   color: black;
+  padding: 5vh 4vw;
+}
+
+.news-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .news-container {
   display: flex;
-  flex-wrap: wrap;
+  margin: 0 2rem;
+
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  scroll-behavior: smooth;
+  gap: 1rem;
+  width: 100%;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #494646;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.7;
+}
+
+.scroll-button.left {
+  left: 0;
+}
+
+.scroll-button.right {
+  right: 0;
+}
+
+.about-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2vh 8vw;
+  margin: 2vh 0;
+}
+
+.about-img {
+  max-width: 600px;
+}
+
+@media (max-width: 700px) {
+  .news-container {
+    margin: 0 0.5rem;
+  }
+  .about-img {
+    max-width: 100%;
+  }
 }
