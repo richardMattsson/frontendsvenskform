@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import './admin.css';
 import Button from '../components/Button';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import AdminHome from '../components/admin/AdminHome';
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -10,15 +11,15 @@ function Admin() {
 
   // const [image, setImage] = useState(null);
 
-  const [heroLandingPage, setHeroLandingPage] = useState(null);
+  // const [heroLandingPage, setHeroLandingPage] = useState(null);
   // const [newsHeroImage, setNewsHeroImage] = useState(null);
   const [projectsHeroImage, setProjectsHeroImage] = useState(null);
   const [archivesHeroImage, setArchivesHeroImage] = useState(null);
 
-  const [title, setTitle] = useState('');
-  const [subtitle, setSubtitle] = useState('');
-  const [paragraph, setParagraph] = useState('');
-  const [buttonText, setButtonText] = useState('');
+  // const [title, setTitle] = useState('');
+  // const [subtitle, setSubtitle] = useState('');
+  // const [paragraph, setParagraph] = useState('');
+  // const [buttonText, setButtonText] = useState('');
   const [textColor, setTextColor] = useState('black');
 
   const [imageNews, setImageNews] = useState(null);
@@ -30,140 +31,140 @@ function Admin() {
   const [news, setNews] = useState(null);
   const [idNews, setIdNews] = useState('');
   const [newsToUpdate, setNewsToUpdate] = useState(null);
-  const [heroLandingPageToUpdate, setHeroLandingPageToUpdate] = useState(null);
+  // const [heroLandingPageToUpdate, setHeroLandingPageToUpdate] = useState(null);
 
-  const postHeroLandingPage = async (e) => {
-    e.preventDefault();
+  // const postHeroLandingPage = async (e) => {
+  //   e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('subtitle', subtitle);
-    formData.append('paragraph', paragraph);
-    formData.append('buttonText', buttonText);
-    formData.append('file', imageNews);
-    formData.append('textColor', textColor);
+  //   const formData = new FormData();
+  //   formData.append('title', title);
+  //   formData.append('subtitle', subtitle);
+  //   formData.append('paragraph', paragraph);
+  //   formData.append('buttonText', buttonText);
+  //   formData.append('file', imageNews);
+  //   formData.append('textColor', textColor);
 
-    console.log(formData);
+  //   console.log(formData);
 
-    const response = await fetch(`${BASE_URL}/api/uploadHeroLandingPage`, {
-      method: 'POST',
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // },
-      //credentials: 'include', // 🧠 om du använder cookies för auth
-      body: formData,
-    });
+  //   const response = await fetch(`${BASE_URL}/api/uploadHeroLandingPage`, {
+  //     method: 'POST',
+  //     // headers: {
+  //     //   'Content-Type': 'application/json',
+  //     // },
+  //     //credentials: 'include', // 🧠 om du använder cookies för auth
+  //     body: formData,
+  //   });
 
-    if (response.ok) {
-      console.log('Du har lagt till en nyhet');
-      alert('Du har lagt till en nyhet');
-    } else {
-      console.error('Misslyckades att lägga till en nyhet');
-      alert(
-        'Något gick fel med att lägga upp nyheten. Se till att alla fält är ifyllda.'
-      );
-    }
-  };
+  //   if (response.ok) {
+  //     console.log('Du har lagt till en nyhet');
+  //     alert('Du har lagt till en nyhet');
+  //   } else {
+  //     console.error('Misslyckades att lägga till en nyhet');
+  //     alert(
+  //       'Något gick fel med att lägga upp nyheten. Se till att alla fält är ifyllda.'
+  //     );
+  //   }
+  // };
 
-  const updateHeroLandingPage = async (e) => {
-    e.preventDefault();
+  // const updateHeroLandingPage = async (e) => {
+  //   e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('id', heroLandingPageToUpdate.id);
+  //   const formData = new FormData();
+  //   formData.append('id', heroLandingPageToUpdate.id);
 
-    if (title !== heroLandingPageToUpdate.title) {
-      formData.append('title', heroLandingPageToUpdate.title);
-    }
-    if (subtitle !== heroLandingPageToUpdate.date) {
-      formData.append('date', heroLandingPageToUpdate.date);
-    }
-    if (paragraph !== heroLandingPageToUpdate.description) {
-      formData.append('description', heroLandingPageToUpdate.description);
-    }
-    if (textColor !== heroLandingPageToUpdate.textcolor) {
-      formData.append('textcolor', heroLandingPageToUpdate.textcolor);
-    }
-    if (buttonText !== heroLandingPageToUpdate.url) {
-      formData.append('url', heroLandingPageToUpdate.url);
-    }
-    if (imageNews !== heroLandingPageToUpdate.filename) {
-      formData.append('file', heroLandingPageToUpdate.filename);
-    }
+  //   if (title !== heroLandingPageToUpdate.title) {
+  //     formData.append('title', heroLandingPageToUpdate.title);
+  //   }
+  //   if (subtitle !== heroLandingPageToUpdate.date) {
+  //     formData.append('date', heroLandingPageToUpdate.date);
+  //   }
+  //   if (paragraph !== heroLandingPageToUpdate.description) {
+  //     formData.append('description', heroLandingPageToUpdate.description);
+  //   }
+  //   if (textColor !== heroLandingPageToUpdate.textcolor) {
+  //     formData.append('textcolor', heroLandingPageToUpdate.textcolor);
+  //   }
+  //   if (buttonText !== heroLandingPageToUpdate.url) {
+  //     formData.append('url', heroLandingPageToUpdate.url);
+  //   }
+  //   if (imageNews !== heroLandingPageToUpdate.filename) {
+  //     formData.append('file', heroLandingPageToUpdate.filename);
+  //   }
 
-    const response = await fetch(`${BASE_URL}/api/updateHeroLandingPage`, {
-      method: 'PATCH',
-      body: formData,
-    });
-    if (response.ok) {
-      console.log('Du har uppdaterat HeroLandingPage');
-      alert('Du har uppdaterat HeroLandingPage');
-    } else {
-      console.error('Misslyckades att uppdatera HeroLandingPage');
-    }
-  };
+  //   const response = await fetch(`${BASE_URL}/api/updateHeroLandingPage`, {
+  //     method: 'PATCH',
+  //     body: formData,
+  //   });
+  //   if (response.ok) {
+  //     console.log('Du har uppdaterat HeroLandingPage');
+  //     alert('Du har uppdaterat HeroLandingPage');
+  //   } else {
+  //     console.error('Misslyckades att uppdatera HeroLandingPage');
+  //   }
+  // };
 
   // hämtar heroLandingPage från backend
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/api/getHeroLandingPage`);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await fetch(`${BASE_URL}/api/getHeroLandingPage`);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch hero langing page data');
-        }
-        const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch hero langing page data');
+  //       }
+  //       const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
 
-        setHeroLandingPage(data);
-        console.log(data);
-      } catch (error) {
-        console.error('Failed to fetch news', error);
-      }
-    })();
-  }, []);
+  //       setHeroLandingPage(data);
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.error('Failed to fetch news', error);
+  //     }
+  //   })();
+  // }, []);
 
   // Matchar info om HeroLandingPage
-  useEffect(() => {
-    let data;
-    if (heroLandingPage) {
-      data = heroLandingPage[0];
-      setHeroLandingPageToUpdate(data);
+  // useEffect(() => {
+  //   let data;
+  //   if (heroLandingPage) {
+  //     data = heroLandingPage[0];
+  //     setHeroLandingPageToUpdate(data);
 
-      console.log('data från hero landing...', data);
-    }
+  //     console.log('data från hero landing...', data);
+  //   }
 
-    if (data) {
-      setTitle(data.title);
-      setSubtitle(data.subtitle);
-      setParagraph(data.paragraph);
-      setTextColor(data.textcolor);
-      setButtonText(data.buttonText);
-      setImageNews(data.filename);
-    }
-  }, [heroLandingPage]);
+  //   if (data) {
+  //     setTitle(data.title);
+  //     setSubtitle(data.subtitle);
+  //     setParagraph(data.paragraph);
+  //     setTextColor(data.textcolor);
+  //     setButtonText(data.buttonText);
+  //     setImageNews(data.filename);
+  //   }
+  // }, [heroLandingPage]);
 
-  const updateHomePageData = async (event) => {
-    event.preventDefault();
+  // const updateHomePageData = async (event) => {
+  //   event.preventDefault();
 
-    const response = await fetch(`${BASE_URL}/api/homePageData`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      //credentials: 'include', // 🧠 om du använder cookies för auth
-      body: JSON.stringify({
-        title: title,
-        subtitle: subtitle,
-        paragraph: paragraph,
-      }),
-    });
+  //   const response = await fetch(`${BASE_URL}/api/homePageData`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     //credentials: 'include', // 🧠 om du använder cookies för auth
+  //     body: JSON.stringify({
+  //       title: title,
+  //       subtitle: subtitle,
+  //       paragraph: paragraph,
+  //     }),
+  //   });
 
-    if (response.ok) {
-      console.log('Uppdaterad!');
-      alert('Uppdaterad!');
-    } else {
-      console.error('Misslyckades att uppdatera');
-    }
-  };
+  //   if (response.ok) {
+  //     console.log('Uppdaterad!');
+  //     alert('Uppdaterad!');
+  //   } else {
+  //     console.error('Misslyckades att uppdatera');
+  //   }
+  // };
 
   const handleSubmitImageProjectsHero = async (e) => {
     e.preventDefault();
@@ -369,13 +370,12 @@ function Admin() {
 
   return (
     <>
-      <h1>Admin</h1>
-
       {/* Hemsida */}
       {page === 'home' && (
         <>
+          <AdminHome />
           {/* Uppdatera home page data */}
-          <section className="newsImageOne-container">
+          {/* <section className="container-homepage">
             <h1>Uppdatera home page data</h1>
             <form onSubmit={updateHomePageData} className="homePageData-form">
               <label>Rubrik:</label>
@@ -404,9 +404,9 @@ function Admin() {
               />
               <Button type={'submit'} text={'Skicka'} />
             </form>
-          </section>
+          </section> */}
           {/* Posta till hero Landing page */}
-          <section className="newsImageOne-container">
+          {/* <section className="newsImageOne-container">
             <h1>Posta till hero Landing page</h1>
             <form onSubmit={postHeroLandingPage} className="homePageData-form">
               <label>Rubrik:</label>
@@ -451,11 +451,11 @@ function Admin() {
                 onChange={(e) => setImageNews(e.target.files[0])}
               />
               <Button type={'submit'} text={'Skicka'} />
-              {/* <button type="submit">Skicka</button> */}
+            
             </form>
-          </section>
+          </section> */}
           {/* Uppdatera Hero hemsida */}
-          <section className="newsImageOne-container">
+          {/* <section className="newsImageOne-container">
             <h1>Uppdatera Hero hemsida</h1>
 
             <form
@@ -541,10 +541,9 @@ function Admin() {
               />
               <Button type={'submit'} text={'Skicka'} />
             </form>
-          </section>
+          </section> */}
         </>
       )}
-
       {/* Pågående projekt */}
       {page === 'project' && (
         <section className="newsImageOne-container">
@@ -573,7 +572,6 @@ function Admin() {
           )}
         </section>
       )}
-
       {/*Nyheter */}
       {page === 'news' && (
         <>
@@ -780,7 +778,6 @@ function Admin() {
           <h1>Kontakt</h1>
         </>
       )}
-
       {/* Byt bild Hero Nyheter */}
       {/* <section className="newsImageOne-container">
         <h1>Byt bild Hero Nyheter</h1>
@@ -807,6 +804,12 @@ function Admin() {
           </>
         )}
       </section> */}
+      <section style={{ padding: '2vh 5vw' }}>
+        <h1>Admin</h1>{' '}
+        <Link to="/profile">
+          <Button text={'Tillbaka till Profil'} />
+        </Link>
+      </section>
     </>
   );
 }

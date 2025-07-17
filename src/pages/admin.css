@@ -3,6 +3,10 @@
   border: 1px solid black;
 }
 
+.container-homepage {
+  padding: 2vh 5vw;
+}
+
 .newsImageOne-form {
   display: flex;
   flex-direction: column;

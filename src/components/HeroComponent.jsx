@@ -1,10 +1,11 @@
+import Button from './Button';
 import './hero.css';
 
 function HeroComponent({
   imageUrl,
   title,
-  // description,
-  // buttonText,
+  description,
+  buttonText,
   textColor,
 }) {
   return (
@@ -16,31 +17,18 @@ function HeroComponent({
       >
         <div className="hero-container" style={{ color: { textColor } }}>
           <h1 style={{ textAlign: 'center', fontSize: '56px' }}>{title}</h1>
-          {/* <p
+          <p
             style={{
               marginLeft: '130px',
               marginRight: '130px',
               textAlign: 'center',
-            }}
-          >
-            {description}
-          </p> */}
-          {/* <button
-            className="hero-button"
-            style={{
-              width: 'auto',
-              padding: '10px 20px',
-              backgroundColor: 'rgb(253, 224, 4)',
-              // borderRadius: '10px',
-              border: 'none',
-              color: 'black',
-              textTransform: 'uppercase',
-              fontWeight: '500',
+              fontWeight: 'bold',
               fontSize: 'large',
             }}
           >
-            {buttonText}
-          </button> */}
+            {description}
+          </p>
+          <Button text={buttonText} width={150} />
         </div>
       </div>
     </>

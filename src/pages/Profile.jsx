@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+
 import Logout from '../components/Logout';
 import Login from '../components/Login';
 import CreateAccount from '../components/CreateAccount';
@@ -13,15 +14,14 @@ function Profile() {
 
   return (
     <>
-      <h1>Profile</h1>
       {/* <h1>Välkommen {user.email}</h1>; */}
       {user ? (
         <>
           <Logout />
-          <p>hej</p>
-          <Link to="/admin/home">
+
+          {/* <Link to="/admin/home">
             <li className="navlink">Admin</li>
-          </Link>
+          </Link> */}
         </>
       ) : showLogin ? (
         <Login setShowLogin={setShowLogin} />
