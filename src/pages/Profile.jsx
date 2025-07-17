@@ -9,7 +9,7 @@ function Profile() {
   const [showLogin, setShowLogin] = useState(true);
 
   const { user } = useAuth();
-  console.log(user);
+  // console.log(user);
 
   return (
     <>

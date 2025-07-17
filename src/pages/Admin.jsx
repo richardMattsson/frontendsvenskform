@@ -9,49 +9,28 @@ function Admin() {
   const { page } = useParams();
 
   // const [image, setImage] = useState(null);
-  const [homeHeroImage, setHomeHeroImage] = useState(null);
+
+  const [heroLandingPage, setHeroLandingPage] = useState(null);
   // const [newsHeroImage, setNewsHeroImage] = useState(null);
   const [projectsHeroImage, setProjectsHeroImage] = useState(null);
   const [archivesHeroImage, setArchivesHeroImage] = useState(null);
+
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [paragraph, setParagraph] = useState('');
   const [buttonText, setButtonText] = useState('');
+  const [textColor, setTextColor] = useState('black');
+
+  const [imageNews, setImageNews] = useState(null);
 
   const [titleNews, setTitleNews] = useState('');
   const [dateNews, setDateNews] = useState('');
   const [descriptionNews, setDescriptionNews] = useState('');
-  const [textColor, setTextColor] = useState('black');
   const [url, setUrl] = useState('');
-  const [imageNews, setImageNews] = useState(null);
   const [news, setNews] = useState(null);
   const [idNews, setIdNews] = useState('');
   const [newsToUpdate, setNewsToUpdate] = useState(null);
-
-  const handleSubmitImage = async (e) => {
-    e.preventDefault();
-
-    if (!homeHeroImage) {
-      alert('Välj en bild först!');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', homeHeroImage); // image från e.target.files[0]
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/upload`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-      console.log('Upload succeeded:', result);
-      alert('Du har laddat upp en bild.');
-    } catch (error) {
-      console.error('Upload failed:', error);
-    }
-  };
+  const [heroLandingPageToUpdate, setHeroLandingPageToUpdate] = useState(null);
 
   const postHeroLandingPage = async (e) => {
     e.preventDefault();
@@ -85,6 +64,82 @@ function Admin() {
       );
     }
   };
+
+  const updateHeroLandingPage = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('id', heroLandingPageToUpdate.id);
+
+    if (title !== heroLandingPageToUpdate.title) {
+      formData.append('title', heroLandingPageToUpdate.title);
+    }
+    if (subtitle !== heroLandingPageToUpdate.date) {
+      formData.append('date', heroLandingPageToUpdate.date);
+    }
+    if (paragraph !== heroLandingPageToUpdate.description) {
+      formData.append('description', heroLandingPageToUpdate.description);
+    }
+    if (textColor !== heroLandingPageToUpdate.textcolor) {
+      formData.append('textcolor', heroLandingPageToUpdate.textcolor);
+    }
+    if (buttonText !== heroLandingPageToUpdate.url) {
+      formData.append('url', heroLandingPageToUpdate.url);
+    }
+    if (imageNews !== heroLandingPageToUpdate.filename) {
+      formData.append('file', heroLandingPageToUpdate.filename);
+    }
+
+    const response = await fetch(`${BASE_URL}/api/updateHeroLandingPage`, {
+      method: 'PATCH',
+      body: formData,
+    });
+    if (response.ok) {
+      console.log('Du har uppdaterat HeroLandingPage');
+      alert('Du har uppdaterat HeroLandingPage');
+    } else {
+      console.error('Misslyckades att uppdatera HeroLandingPage');
+    }
+  };
+
+  // hämtar heroLandingPage från backend
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/getHeroLandingPage`);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch hero langing page data');
+        }
+        const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
+
+        setHeroLandingPage(data);
+        console.log(data);
+      } catch (error) {
+        console.error('Failed to fetch news', error);
+      }
+    })();
+  }, []);
+
+  // Matchar info om HeroLandingPage
+  useEffect(() => {
+    let data;
+    if (heroLandingPage) {
+      data = heroLandingPage[0];
+      setHeroLandingPageToUpdate(data);
+
+      console.log('data från hero landing...', data);
+    }
+
+    if (data) {
+      setTitle(data.title);
+      setSubtitle(data.subtitle);
+      setParagraph(data.paragraph);
+      setTextColor(data.textcolor);
+      setButtonText(data.buttonText);
+      setImageNews(data.filename);
+    }
+  }, [heroLandingPage]);
 
   const updateHomePageData = async (event) => {
     event.preventDefault();
@@ -319,28 +374,7 @@ function Admin() {
       {/* Hemsida */}
       {page === 'home' && (
         <>
-          <section className="newsImageOne-container">
-            <h1>Byt bild Hero hemsida</h1>
-            <form onSubmit={handleSubmitImage} className="newsImageOne-form">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setHomeHeroImage(e.target.files[0])}
-              />
-              <button type="submit">Spara</button>
-            </form>
-
-            {homeHeroImage && (
-              <>
-                <p>(Förhandgranska)</p>
-                <img
-                  src={URL.createObjectURL(homeHeroImage)}
-                  alt="Preview"
-                  width="200"
-                />
-              </>
-            )}
-          </section>
+          {/* Uppdatera home page data */}
           <section className="newsImageOne-container">
             <h1>Uppdatera home page data</h1>
             <form onSubmit={updateHomePageData} className="homePageData-form">
@@ -369,9 +403,9 @@ function Admin() {
                 onChange={(e) => setParagraph(e.target.value)}
               />
               <Button type={'submit'} text={'Skicka'} />
-              {/* <button type="submit">Skicka</button> */}
             </form>
           </section>
+          {/* Posta till hero Landing page */}
           <section className="newsImageOne-container">
             <h1>Posta till hero Landing page</h1>
             <form onSubmit={postHeroLandingPage} className="homePageData-form">
@@ -418,6 +452,94 @@ function Admin() {
               />
               <Button type={'submit'} text={'Skicka'} />
               {/* <button type="submit">Skicka</button> */}
+            </form>
+          </section>
+          {/* Uppdatera Hero hemsida */}
+          <section className="newsImageOne-container">
+            <h1>Uppdatera Hero hemsida</h1>
+
+            <form
+              onSubmit={updateHeroLandingPage}
+              className="homePageData-form"
+            >
+              <label>Rubrik:</label>
+              <input
+                className="input-admin"
+                placeholder="Rubrik"
+                value={heroLandingPageToUpdate?.title || ''}
+                onChange={(e) => {
+                  if (!heroLandingPageToUpdate) return;
+                  setHeroLandingPageToUpdate({
+                    ...heroLandingPageToUpdate,
+                    title: e.target.value,
+                  });
+                }}
+              />
+              <label>Underrubrik:</label>
+              <input
+                className="input-admin"
+                placeholder="Underrubrik"
+                value={heroLandingPageToUpdate?.subtitle || ''}
+                onChange={(e) => {
+                  if (!heroLandingPageToUpdate) return;
+                  setHeroLandingPageToUpdate({
+                    ...heroLandingPageToUpdate,
+                    subtitle: e.target.value,
+                  });
+                }}
+              />
+
+              <label>Paragraf:</label>
+              <textarea
+                className="textarea-admin"
+                cols={30}
+                rows={10}
+                placeholder="Paragraf..."
+                value={heroLandingPageToUpdate?.paragraph || ''}
+                onChange={(e) =>
+                  setHeroLandingPageToUpdate({
+                    ...heroLandingPageToUpdate,
+                    paragraph: e.target.value,
+                  })
+                }
+              />
+              <label>Textfärg</label>
+              <select
+                onChange={(e) =>
+                  setHeroLandingPageToUpdate({
+                    ...heroLandingPageToUpdate,
+                    textColor: e.target.value,
+                  })
+                }
+              >
+                <option value="black">Svart</option>
+                <option value="white">Vit</option>
+              </select>
+
+              <label>Knapptext</label>
+              <input
+                className="input-admin"
+                placeholder="Knapptext"
+                value={heroLandingPageToUpdate?.buttonText || ''}
+                onChange={(e) =>
+                  setHeroLandingPageToUpdate({
+                    ...heroLandingPageToUpdate,
+                    buttonText: e.target.value,
+                  })
+                }
+              />
+              <label>Bild:</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  setHeroLandingPageToUpdate({
+                    ...heroLandingPageToUpdate,
+                    filename: e.target.files[0],
+                  })
+                }
+              />
+              <Button type={'submit'} text={'Skicka'} />
             </form>
           </section>
         </>
