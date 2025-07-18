@@ -27,12 +27,12 @@
   cursor: pointer;
 }
 
-.news-section-large {
+.news-large-container {
   display: flex;
   color: black;
-  border: 1px solid black;
-  padding: 1em;
-  margin: 5px;
+
+  /* padding: 1em;
+  margin: 5px; */
 }
 
 .news-image-container {

@@ -1,0 +1,13 @@
+.newscomponent-section {
+  padding: 4vh 5vw;
+}
+.header-section-news {
+  padding: 1vh 5vw;
+}
+.newsLarge-section {
+  padding: 2vh 5vw;
+  display: flex;
+  color: black;
+  background-color: rgb(241, 237, 232);
+  margin: 4vh 4vw;
+}

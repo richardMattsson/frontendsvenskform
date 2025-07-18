@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import './home.css';
 import NewsComponent from '../components/NewsComponent';
@@ -109,27 +110,23 @@ function Home() {
         <HeroComponent
           imageUrl={`${BASE_URL}/${heroData[0].filepath.replace(/\\/g, '/')}`}
           title={heroData[0].title}
+          subtitle={heroData[0].subtitle}
           description={heroData[0].paragraph}
           buttonText={heroData[0].buttonText}
           textColor={heroData[0].textColor}
         />
       )}
-      {heroData &&
-        heroData.map((data) => {
-          return (
-            <React.Fragment key={data.id}>
-              <section className="homePageData-section">
-                <div className="homePageData-container">
-                  <h1>{data.title}</h1>
-                  <h3>{data.subtitle}</h3>
-                  <p>{data.paragraph}</p>
-                </div>
-              </section>
-            </React.Fragment>
-          );
-        })}
-      <section style={{ padding: '0 3vw' }}>
-        <h1>Nyheter</h1>
+
+      {heroData && (
+        <section className="homePageData-section">
+          <div className="homePageData-container">
+            <h4>{heroData[0].paragraph}</h4>
+          </div>
+        </section>
+      )}
+
+      <section style={{ padding: '3vh 6vw' }}>
+        <h1>NYHETER</h1>
       </section>
 
       <section className="news-section">
@@ -160,34 +157,24 @@ function Home() {
       </section>
 
       <section className="about-section">
-        <h1>Om oss</h1>
         <img
           className="about-img"
           src="/Illustration_4_RGB.jpg"
           alt="om oss bild"
         />
-
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam,
-          possimus. Veniam tenetur incidunt placeat quasi voluptatem quaerat
-          quae natus? Delectus ipsa fuga aperiam sed officiis maiores nobis,
-          explicabo dolorem excepturi?
-        </p>
-        <Button text={'Läs mer'} type={'button'} />
+        <div className="about-container">
+          <h1>Om oss</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam,
+            possimus. Veniam tenetur incidunt placeat quasi voluptatem quaerat
+            quae natus? Delectus ipsa fuga aperiam sed officiis maiores nobis,
+            explicabo dolorem excepturi?
+          </p>
+          <Link to="/about">
+            <Button text={'Läs mer  >>'} type={'button'} />
+          </Link>
+        </div>
       </section>
-      {/* {news &&
-        news.map((n) => {
-          return (
-            <NewsLarge
-              key={n.id}
-              imageSrc={n.filepath}
-              title={n.title}
-              date={n.date}
-              description={n.description}
-              url={n.url}
-            />
-          );
-        })} */}
     </>
   );
 }

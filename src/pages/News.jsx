@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import HeroComponent from '../components/HeroComponent';
 import NewsLarge from '../components/NewsLarge';
 import NewsComponent from '../components/NewsComponent';
+
+import './news.css';
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function News() {
@@ -57,8 +59,6 @@ function News() {
 
   return (
     <>
-      <h1>Nyheter</h1>
-
       {/* {imagePath && (
         <HeroComponent
           imageUrl={`http://localhost:8080${imagePath}`}
@@ -67,25 +67,28 @@ function News() {
       )} */}
 
       {selectedNews ? (
-        <NewsLarge
-          imageSrc={selectedNews.filepath}
-          title={selectedNews.title}
-          date={selectedNews.date}
-          description={selectedNews.description}
-          url={selectedNews.url}
-        />
+        <section className="newsLarge-section">
+          <NewsLarge
+            imageSrc={selectedNews.filepath}
+            title={selectedNews.title}
+            date={selectedNews.date}
+            description={selectedNews.description}
+            url={selectedNews.url}
+          />
+        </section>
       ) : (
         news &&
         news.map((n) => (
-          <NewsComponent
-            key={n.id}
-            imageUrl={n.filepath}
-            color={n.textcolor}
-            title={n.title}
-            date={n.date}
-            description={n.description}
-            link={`/news/${n.id}`}
-          />
+          <section key={n.id} className="newscomponent-section">
+            <NewsComponent
+              imageUrl={n.filepath}
+              color={n.textcolor}
+              title={n.title}
+              date={n.date}
+              description={n.description}
+              link={`/news/${n.id}`}
+            />
+          </section>
         ))
       )}
     </>

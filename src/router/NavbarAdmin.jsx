@@ -9,7 +9,7 @@ function NavbarAdmin() {
         <div className="logo">
           <Link to="/">
             {/* <li className="navlink">Hem</li> */}
-            <img src="/logo_black.png" alt="Logo" width={160} />
+            <img src="/logo-white.png" alt="Logo" width={160} />
           </Link>
 
           <button

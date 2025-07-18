@@ -3,16 +3,19 @@ import './newscomponent.css';
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function NewsLarge({ imageSrc, title, date, description, url }) {
+  console.log(url);
   const formatUrl = (url) => {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      return `https://${url}`;
+    if (url) {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        return `https://${url}`;
+      }
+      return url;
     }
-    return url;
   };
 
   return (
     <>
-      <div className="news-section-large">
+      <div className="news-large-container">
         <div className="news-image-container">
           <img
             src={`${BASE_URL}/${imageSrc.replace(/\\/g, '/')}`}

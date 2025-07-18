@@ -3,9 +3,10 @@ import './hero.css';
 
 function HeroComponent({
   imageUrl,
-  title,
-  description,
-  buttonText,
+  // title,
+  subtitle,
+  // description,
+  // buttonText,
   textColor,
 }) {
   return (
@@ -16,8 +17,17 @@ function HeroComponent({
         alt="Startsida-bild"
       >
         <div className="hero-container" style={{ color: { textColor } }}>
-          <h1 style={{ textAlign: 'center', fontSize: '56px' }}>{title}</h1>
-          <p
+          <h1
+            style={{
+              textAlign: 'center',
+              fontSize: '58px',
+              textTransform: 'uppercase',
+            }}
+          >
+            {subtitle}
+          </h1>
+          {/* <h4>{subtitle}</h4> */}
+          {/* <p
             style={{
               marginLeft: '130px',
               marginRight: '130px',
@@ -27,8 +37,8 @@ function HeroComponent({
             }}
           >
             {description}
-          </p>
-          <Button text={buttonText} width={150} />
+          </p> */}
+          {/* <Button text={buttonText} width={150} /> */}
         </div>
       </div>
     </>

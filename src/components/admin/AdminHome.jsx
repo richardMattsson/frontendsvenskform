@@ -15,7 +15,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function AdminHome() {
   const [selectOption, setSelectOption] = useState('postHero');
-  const [heroLandingPage, setHeroLandingPage] = useState(null);
+  //   const [heroLandingPage, setHeroLandingPage] = useState(null);
 
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
@@ -25,6 +25,7 @@ function AdminHome() {
 
   const [imageNews, setImageNews] = useState(null);
 
+  const [originalHeroLandingPage, setOriginalHeroLandingPage] = useState(null);
   const [heroLandingPageToUpdate, setHeroLandingPageToUpdate] = useState(null);
 
   const postHeroLandingPage = async (e) => {
@@ -66,24 +67,32 @@ function AdminHome() {
     const formData = new FormData();
     formData.append('id', heroLandingPageToUpdate.id);
 
-    if (title !== heroLandingPageToUpdate.title) {
+    if (heroLandingPageToUpdate.title !== originalHeroLandingPage.title) {
       formData.append('title', heroLandingPageToUpdate.title);
     }
-    if (subtitle !== heroLandingPageToUpdate.date) {
-      formData.append('date', heroLandingPageToUpdate.date);
+    if (heroLandingPageToUpdate.subtitle !== originalHeroLandingPage.subtitle) {
+      formData.append('subtitle', heroLandingPageToUpdate.subtitle);
     }
-    if (paragraph !== heroLandingPageToUpdate.description) {
-      formData.append('description', heroLandingPageToUpdate.description);
+    if (
+      heroLandingPageToUpdate.paragraph !== originalHeroLandingPage.paragraph
+    ) {
+      formData.append('paragraph', heroLandingPageToUpdate.paragraph);
     }
-    if (textColor !== heroLandingPageToUpdate.textcolor) {
-      formData.append('textcolor', heroLandingPageToUpdate.textcolor);
+    if (
+      heroLandingPageToUpdate.textColor !== originalHeroLandingPage.textColor
+    ) {
+      formData.append('textColor', heroLandingPageToUpdate.textColor);
     }
-    if (buttonText !== heroLandingPageToUpdate.url) {
-      formData.append('url', heroLandingPageToUpdate.url);
+    if (
+      heroLandingPageToUpdate.buttonText !== originalHeroLandingPage.buttonText
+    ) {
+      formData.append('buttonText', heroLandingPageToUpdate.buttonText);
     }
-    if (imageNews !== heroLandingPageToUpdate.filename) {
+    if (heroLandingPageToUpdate.filename !== originalHeroLandingPage.filename) {
       formData.append('file', heroLandingPageToUpdate.filename);
     }
+
+    console.log(formData);
 
     const response = await fetch(`${BASE_URL}/api/updateHeroLandingPage`, {
       method: 'PATCH',
@@ -131,8 +140,9 @@ function AdminHome() {
           throw new Error('Failed to fetch hero langing page data');
         }
         const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
-
-        setHeroLandingPage(data);
+        setOriginalHeroLandingPage(data[0]);
+        setHeroLandingPageToUpdate(data[0]);
+        // setHeroLandingPage(data);
         console.log(data);
       } catch (error) {
         console.error('Failed to fetch news', error);
@@ -141,24 +151,24 @@ function AdminHome() {
   }, []);
 
   // Matchar info om HeroLandingPage
-  useEffect(() => {
-    let data;
-    if (heroLandingPage) {
-      data = heroLandingPage[0];
-      setHeroLandingPageToUpdate(data);
+  //   useEffect(() => {
+  //     let data;
+  //     if (heroLandingPage) {
+  //       data = heroLandingPage[0];
+  //       setHeroLandingPageToUpdate(data);
 
-      console.log('data från hero landing...', data);
-    }
+  //       console.log('data från hero landing...', data);
+  //     }
 
-    if (data) {
-      setTitle(data.title);
-      setSubtitle(data.subtitle);
-      setParagraph(data.paragraph);
-      setTextColor(data.textcolor);
-      setButtonText(data.buttonText);
-      setImageNews(data.filename);
-    }
-  }, [heroLandingPage]);
+  //     if (data) {
+  //       setTitle(data.title);
+  //       setSubtitle(data.subtitle);
+  //       setParagraph(data.paragraph);
+  //       setTextColor(data.textColor);
+  //       setButtonText(data.buttonText);
+  //       setImageNews(data.filename);
+  //     }
+  //   }, [heroLandingPage]);
 
   useEffect(() => {}, [selectOption]);
   return (
@@ -429,10 +439,10 @@ function AdminHome() {
                 <FormLabel>Textfärg</FormLabel>
                 <Select
                   placeholder="Välj ett alternativ"
-                  onChange={(e) =>
+                  onChange={(event, newValue) =>
                     setHeroLandingPageToUpdate({
                       ...heroLandingPageToUpdate,
-                      textColor: e.target.value,
+                      textColor: newValue,
                     })
                   }
                 >

@@ -24,10 +24,15 @@
   cursor: pointer;
 }
 
+.homePageData-section {
+  margin: 2vh 6vw;
+  border-bottom: 2px solid rgb(104, 102, 102);
+}
+
 .homePageData-container {
-  text-align: center;
   color: black;
-  padding: 5vh 4vw;
+  font-size: 20px;
+  padding: 4vh 4vw;
 }
 
 .news-section {
@@ -35,6 +40,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  margin: 1vh 3vw;
 }
 
 .news-container {
@@ -78,7 +84,11 @@
   flex-direction: column;
   align-items: center;
   padding: 2vh 8vw;
-  margin: 2vh 0;
+  margin: 4vh 0;
+}
+
+.about-container {
+  margin: 1vh 8vw;
 }
 
 .about-img {
