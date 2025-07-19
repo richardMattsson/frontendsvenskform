@@ -1,20 +1,28 @@
 import { useState } from 'react';
 
 import { CssVarsProvider } from '@mui/joy/styles';
-import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import Button from '@mui/joy/Button';
+import {
+  Textarea,
+  Button,
+  Input,
+  FormLabel,
+  FormControl,
+  Typography,
+  Sheet,
+  Select,
+  Option,
+  CircularProgress,
+} from '@mui/joy';
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function AdminProjects() {
   const [projectsHeroImage, setProjectsHeroImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmitImageProjectsHero = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!projectsHeroImage) {
       alert('Välj en bild först!');
@@ -29,6 +37,8 @@ function AdminProjects() {
         method: 'POST',
         body: formData,
       });
+
+      setLoading(false);
 
       const result = await response.json();
       console.log('Upload succeeded:', result);
@@ -78,6 +88,7 @@ function AdminProjects() {
               Spara
             </Button>
           </form>
+          {loading && <CircularProgress />}
 
           {projectsHeroImage && (
             <>

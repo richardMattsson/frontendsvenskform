@@ -11,16 +11,19 @@ import {
   Sheet,
   Select,
   Option,
+  CircularProgress,
 } from '@mui/joy';
+import HeroComponent from '../HeroComponent';
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function AdminArchives() {
   const [archivesHeroImage, setArchivesHeroImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmitImageArchivesHero = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (!archivesHeroImage) {
       alert('Välj en bild först!');
       return;
@@ -36,6 +39,7 @@ function AdminArchives() {
       });
 
       const result = await response.json();
+      setLoading(false);
       console.log('Upload succeeded:', result);
       alert('Du har laddat upp en bild.');
     } catch (error) {
@@ -81,18 +85,24 @@ function AdminArchives() {
             </Button>
           </form>
 
-          {archivesHeroImage && (
-            <>
-              <p>(Förhandgranska)</p>
-              <img
-                src={URL.createObjectURL(archivesHeroImage)}
-                alt="Preview"
-                width="200"
-              />
-            </>
-          )}
+          {loading && <CircularProgress />}
         </Sheet>
       </CssVarsProvider>
+
+      {archivesHeroImage && (
+        <>
+          <p>(Förhandgranska) {URL.createObjectURL(archivesHeroImage)}</p>
+          {/* <img
+            src={URL.createObjectURL(archivesHeroImage)}
+            alt="Preview"
+            width="200"
+          /> */}
+          <HeroComponent
+            imageUrl={URL.createObjectURL(archivesHeroImage)}
+            subtitle={'Arkiv'}
+          />
+        </>
+      )}
       {/* <section className="newsImageOne-container">
         <h1>Byt bild Hero Arkiv</h1>
         <form

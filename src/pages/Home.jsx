@@ -7,6 +7,10 @@ import NewsLarge from '../components/NewsLarge';
 import HeroComponent from '../components/HeroComponent';
 import Button from '../components/Button';
 
+import IconButton from '@mui/joy/IconButton';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Home() {
@@ -120,7 +124,7 @@ function Home() {
       {heroData && (
         <section className="homePageData-section">
           <div className="homePageData-container">
-            <h4>{heroData[0].paragraph}</h4>
+            <h4 style={{ whiteSpace: 'pre-line' }}>{heroData[0].paragraph}</h4>
           </div>
         </section>
       )}
@@ -130,9 +134,12 @@ function Home() {
       </section>
 
       <section className="news-section">
-        <button onClick={scrollLeft} className="scroll-button left">
+        {/* <button onClick={scrollLeft} className="scroll-button left">
           ◀
-        </button>
+        </button> */}
+        <IconButton variant="soft" onClick={scrollLeft}>
+          <ChevronLeft />
+        </IconButton>
 
         <div className="news-container" ref={scrollRef}>
           {news &&
@@ -151,9 +158,12 @@ function Home() {
             })}
         </div>
 
-        <button onClick={scrollRight} className="scroll-button right">
+        {/* <button onClick={scrollRight} className="scroll-button right">
           ▶
-        </button>
+        </button> */}
+        <IconButton variant="soft" onClick={scrollRight}>
+          <ChevronRight />
+        </IconButton>
       </section>
 
       <section className="about-section">

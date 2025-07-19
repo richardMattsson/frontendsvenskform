@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react';
-// import Button from '../Button';
-import * as React from 'react';
+
 import { CssVarsProvider } from '@mui/joy/styles';
-import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import { Textarea } from '@mui/joy';
-import Button from '@mui/joy/Button';
-import { Select, Option } from '@mui/joy';
+
+import {
+  Textarea,
+  Button,
+  Input,
+  FormLabel,
+  FormControl,
+  Typography,
+  Sheet,
+  Select,
+  Option,
+  CircularProgress,
+} from '@mui/joy';
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function AdminHome() {
   const [selectOption, setSelectOption] = useState('postHero');
   //   const [heroLandingPage, setHeroLandingPage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
@@ -30,6 +35,7 @@ function AdminHome() {
 
   const postHeroLandingPage = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     formData.append('title', title);
@@ -50,6 +56,8 @@ function AdminHome() {
       body: formData,
     });
 
+    setLoading(false);
+
     if (response.ok) {
       console.log('Du har lagt till en nyhet');
       alert('Du har lagt till en nyhet');
@@ -63,6 +71,7 @@ function AdminHome() {
 
   const updateHeroLandingPage = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     formData.append('id', heroLandingPageToUpdate.id);
@@ -92,12 +101,13 @@ function AdminHome() {
       formData.append('file', heroLandingPageToUpdate.filename);
     }
 
-    console.log(formData);
-
     const response = await fetch(`${BASE_URL}/api/updateHeroLandingPage`, {
       method: 'PATCH',
       body: formData,
     });
+
+    setLoading(false);
+
     if (response.ok) {
       console.log('Du har uppdaterat HeroLandingPage');
       alert('Du har uppdaterat HeroLandingPage');
@@ -108,6 +118,7 @@ function AdminHome() {
 
   const updateHomePageData = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     const response = await fetch(`${BASE_URL}/api/homePageData`, {
       method: 'PUT',
@@ -121,6 +132,8 @@ function AdminHome() {
         paragraph: paragraph,
       }),
     });
+
+    setLoading(false);
 
     if (response.ok) {
       console.log('Uppdaterad!');
@@ -258,6 +271,7 @@ function AdminHome() {
                 Skicka
               </Button>
             </form>
+            {loading && <CircularProgress />}
           </Sheet>
         </CssVarsProvider>
       )}
@@ -356,6 +370,7 @@ function AdminHome() {
                 Skicka
               </Button>
             </form>
+            {loading && <CircularProgress />}
           </Sheet>
         </CssVarsProvider>
       )}
@@ -485,6 +500,7 @@ function AdminHome() {
                 Skicka
               </Button>
             </form>
+            {loading && <CircularProgress />}
           </Sheet>
         </CssVarsProvider>
       )}

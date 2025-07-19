@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 // import Button from '../Button';
+import NewsLarge from '../NewsLarge';
+import NewsComponent from '../NewsComponent';
 
 import { CssVarsProvider } from '@mui/joy/styles';
 
@@ -13,12 +15,15 @@ import {
   Sheet,
   Select,
   Option,
+  CircularProgress,
 } from '@mui/joy';
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function AdminNews() {
   const [selectOption, setSelectOption] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const [news, setNews] = useState(null);
   const [imageNews, setImageNews] = useState(null);
@@ -42,7 +47,6 @@ function AdminNews() {
         const data = await response.json(); // t.ex. { filepath: "/uploads/image.jpg" }
 
         setNews(data);
-        console.log(data);
       } catch (error) {
         console.error('Failed to fetch news', error);
       }
@@ -54,7 +58,7 @@ function AdminNews() {
     let found;
     if (news) {
       found = news.find((n) => n.id === Number(idNews));
-      console.log(found);
+
       setNewsToUpdate(found);
     }
 
@@ -68,9 +72,19 @@ function AdminNews() {
     }
   }, [idNews]);
 
+  //   Städa upp URL.createObjectURL
+  useEffect(() => {
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage);
+      }
+    };
+  }, [previewImage]);
+
   // Lägga till nyhet
   const submitNews = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     formData.append('title', titleNews);
@@ -91,6 +105,8 @@ function AdminNews() {
       body: formData,
     });
 
+    setLoading(false);
+
     if (response.ok) {
       console.log('Du har lagt till en nyhet');
       alert('Du har lagt till en nyhet');
@@ -105,6 +121,7 @@ function AdminNews() {
   // Uppdatera en nyhet
   const updateNews = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     formData.append('id', newsToUpdate.id);
@@ -132,8 +149,10 @@ function AdminNews() {
       method: 'PATCH',
       body: formData,
     });
+
+    setLoading(false);
+
     if (response.ok) {
-      console.log('Du har uppdaterat en nyhet');
       alert('Du har uppdaterat en nyhet');
     } else {
       console.error('Misslyckades att uppdatera en nyhet');
@@ -142,11 +161,13 @@ function AdminNews() {
 
   // Raderar en nyhet
   async function deleteNews(id) {
+    setLoading(true);
+
     try {
       const response = await fetch(`${BASE_URL}/api/deleteNews/${Number(id)}`, {
         method: 'DELETE',
       });
-
+      setLoading(false);
       if (response.ok) {
         console.log('Nyheten raderades.');
         alert('Nyheten raderades.');
@@ -261,6 +282,7 @@ function AdminNews() {
                 Skicka
               </Button>
             </form>
+            {loading && <CircularProgress />}
           </Sheet>
         </CssVarsProvider>
       )}
@@ -315,130 +337,169 @@ function AdminNews() {
       </section> */}
 
       {selectOption === 'update' && (
-        <CssVarsProvider>
-          <Sheet
-            variant="outlined"
-            sx={{
-              width: 500,
-              mx: 'auto', // margin left & right
-              my: 4, // margin top & bottom
-              py: 3, // padding top & bottom
-              px: 2, // padding left & right
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
-              borderRadius: 'sm',
-              boxShadow: 'md',
-            }}
-          >
-            <div>
-              <Typography level="h4" component="h1">
-                Ändra en nyhet
-              </Typography>
-            </div>
+        <>
+          <CssVarsProvider>
+            <Sheet
+              variant="outlined"
+              sx={{
+                width: 500,
+                mx: 'auto', // margin left & right
+                my: 4, // margin top & bottom
+                py: 3, // padding top & bottom
+                px: 2, // padding left & right
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                borderRadius: 'sm',
+                boxShadow: 'md',
+              }}
+            >
+              <div>
+                <Typography level="h4" component="h1">
+                  Ändra en nyhet
+                </Typography>
+              </div>
 
-            <form onSubmit={updateNews}>
-              <FormControl>
-                <FormLabel>Välj vilken nyhet att ändra</FormLabel>
-                <Select
-                  placeholder="Välj ett alternativ"
-                  value={idNews || ''}
-                  onChange={(event, newValue) => setIdNews(newValue)}
-                >
-                  {news &&
-                    news.map((n) => (
-                      <Option key={n.id} value={String(n.id)}>
-                        Rubrik: {n.title} Skapad: {n.date} id: {n.id}
-                      </Option>
-                    ))}
-                </Select>
-              </FormControl>
+              <form onSubmit={updateNews}>
+                <FormControl>
+                  <FormLabel>Välj vilken nyhet att ändra</FormLabel>
+                  <Select
+                    placeholder="Välj ett alternativ"
+                    value={idNews || ''}
+                    onChange={(event, newValue) => setIdNews(newValue)}
+                  >
+                    {news &&
+                      news.map((n) => (
+                        <Option key={n.id} value={String(n.id)}>
+                          Rubrik: {n.title} Skapad: {n.date} id: {n.id}
+                        </Option>
+                      ))}
+                  </Select>
+                </FormControl>
 
-              <FormControl>
-                <FormLabel>Rubrik</FormLabel>
-                <Input
-                  placeholder="Rubrik"
-                  value={newsToUpdate?.title || ''}
-                  onChange={(e) => {
-                    if (!newsToUpdate) return;
-                    setNewsToUpdate({ ...newsToUpdate, title: e.target.value });
-                  }}
+                <FormControl>
+                  <FormLabel>Rubrik</FormLabel>
+                  <Input
+                    placeholder="Rubrik"
+                    value={newsToUpdate?.title || ''}
+                    onChange={(e) => {
+                      if (!newsToUpdate) return;
+                      setNewsToUpdate({
+                        ...newsToUpdate,
+                        title: e.target.value,
+                      });
+                    }}
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Datum</FormLabel>
+                  <Input
+                    type="date"
+                    placeholder="Datum"
+                    value={newsToUpdate?.date || ''}
+                    onChange={(e) =>
+                      setNewsToUpdate({ ...newsToUpdate, date: e.target.value })
+                    }
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Beskrivning</FormLabel>
+                  <Textarea
+                    minRows={5}
+                    placeholder="Beskrivning..."
+                    value={newsToUpdate?.description || ''}
+                    onChange={(e) =>
+                      setNewsToUpdate({
+                        ...newsToUpdate,
+                        description: e.target.value,
+                      })
+                    }
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Textfärg</FormLabel>
+                  <Select
+                    placeholder="Välj ett alternativ"
+                    onChange={(event, newValue) =>
+                      setNewsToUpdate({
+                        ...newsToUpdate,
+                        textcolor: newValue,
+                      })
+                    }
+                  >
+                    <Option value="black" label="black">
+                      Svart
+                    </Option>
+                    <Option value="white" label="white">
+                      Vit
+                    </Option>
+                  </Select>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Länk</FormLabel>
+                  <Input
+                    placeholder="Länk"
+                    value={newsToUpdate?.url || ''}
+                    onChange={(e) =>
+                      setNewsToUpdate({ ...newsToUpdate, url: e.target.value })
+                    }
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Bild</FormLabel>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      console.log(file);
+                      if (!file) return;
+
+                      setNewsToUpdate({
+                        ...newsToUpdate,
+                        filename: file,
+                      });
+
+                      setPreviewImage(URL.createObjectURL(file));
+                    }}
+                  />
+                </FormControl>
+                <Button type="submit" sx={{ mt: 3 }}>
+                  Skicka
+                </Button>
+              </form>
+              {loading && <CircularProgress />}
+            </Sheet>
+          </CssVarsProvider>
+          {newsToUpdate && (
+            <>
+              <section className="newsLarge-section">
+                <NewsLarge
+                  imageSrc={previewImage || newsToUpdate.filepath}
+                  title={newsToUpdate.title}
+                  date={newsToUpdate.date}
+                  description={newsToUpdate.description}
+                  url={newsToUpdate.url}
                 />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Datum</FormLabel>
-                <Input
-                  type="date"
-                  placeholder="Datum"
-                  value={newsToUpdate?.date || ''}
-                  onChange={(e) =>
-                    setNewsToUpdate({ ...newsToUpdate, date: e.target.value })
-                  }
+              </section>
+              <section>
+                <NewsComponent
+                  imageUrl={previewImage || newsToUpdate.filepath}
+                  color={newsToUpdate.textcolor}
+                  title={newsToUpdate.title}
+                  date={newsToUpdate.date}
+                  description={newsToUpdate.description}
+                  link={`/news/${newsToUpdate.url}`}
                 />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Beskrivning</FormLabel>
-                <Textarea
-                  minRows={5}
-                  placeholder="Beskrivning..."
-                  value={newsToUpdate?.description || ''}
-                  onChange={(e) =>
-                    setNewsToUpdate({
-                      ...newsToUpdate,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Textfärg</FormLabel>
-                <Select
-                  placeholder="Välj ett alternativ"
-                  onChange={(e) =>
-                    setNewsToUpdate({
-                      ...newsToUpdate,
-                      textcolor: e.target.value,
-                    })
-                  }
-                >
-                  <Option value="black">Svart</Option>
-                  <Option value="white">Vit</Option>
-                </Select>
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Länk</FormLabel>
-                <Input
-                  placeholder="Länk"
-                  value={newsToUpdate?.url || ''}
-                  onChange={(e) =>
-                    setNewsToUpdate({ ...newsToUpdate, url: e.target.value })
-                  }
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Bild</FormLabel>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) =>
-                    setNewsToUpdate({
-                      ...newsToUpdate,
-                      filename: e.target.files[0],
-                    })
-                  }
-                />
-              </FormControl>
-              <Button type="submit" sx={{ mt: 3 }}>
-                Skicka
-              </Button>
-            </form>
-          </Sheet>
-        </CssVarsProvider>
+              </section>
+            </>
+          )}
+        </>
       )}
 
       {/* <section className="newsImageOne-container">
@@ -573,6 +634,7 @@ function AdminNews() {
                 Radera
               </Button>
             </form>
+            {loading && <CircularProgress />}
           </Sheet>
         </CssVarsProvider>
       )}
