@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
@@ -11,6 +11,10 @@ function Profile() {
 
   const { user } = useAuth();
   // console.log(user);
+
+  useEffect(() => {
+    document.title = 'Profil | Svensk Form Väst';
+  }, []);
 
   return (
     <>

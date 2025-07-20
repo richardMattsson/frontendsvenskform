@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
+
 import HeroComponent from '../components/HeroComponent';
 
 function About() {
+  useEffect(() => {
+    document.title = 'Om oss | Svensk Form Väst';
+  }, []);
   return (
     <>
       <HeroComponent

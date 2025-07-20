@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import './admin.css';
 import Button from '../components/Button';
 import { useParams, Link } from 'react-router-dom';
@@ -13,6 +15,10 @@ const BASE_URL = import.meta.env.VITE_API_BASE;
 
 function Admin() {
   const { page } = useParams();
+
+  useEffect(() => {
+    document.title = 'Admin | Svensk Form Väst';
+  }, []);
 
   return (
     <>

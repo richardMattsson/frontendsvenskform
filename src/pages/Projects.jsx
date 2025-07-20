@@ -6,6 +6,10 @@ function Projects() {
   const [imagePath, setImagePath] = useState(null);
 
   useEffect(() => {
+    document.title = 'Pågående projekt | Svensk Form Väst';
+  }, []);
+
+  useEffect(() => {
     (async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/getImageProjectsHero`);

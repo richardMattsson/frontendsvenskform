@@ -20,6 +20,10 @@ function Home() {
   const [news, setNews] = useState(null);
   const [heroData, setHeroData] = useState(null);
 
+  useEffect(() => {
+    document.title = 'Svensk Form Väst';
+  }, []);
+
   // GET home page data
   useEffect(() => {
     (async () => {
@@ -134,9 +138,6 @@ function Home() {
       </section>
 
       <section className="news-section">
-        {/* <button onClick={scrollLeft} className="scroll-button left">
-          ◀
-        </button> */}
         <IconButton variant="soft" onClick={scrollLeft}>
           <ChevronLeft />
         </IconButton>
@@ -158,9 +159,6 @@ function Home() {
             })}
         </div>
 
-        {/* <button onClick={scrollRight} className="scroll-button right">
-          ▶
-        </button> */}
         <IconButton variant="soft" onClick={scrollRight}>
           <ChevronRight />
         </IconButton>

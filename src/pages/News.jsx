@@ -13,6 +13,10 @@ function News() {
   const { id } = useParams();
   const [selectedNews, setSelectedNews] = useState(null);
 
+  useEffect(() => {
+    document.title = 'Nyheter | Svensk Form Väst';
+  }, []);
+
   // hämtar hero bild
   // useEffect(() => {
   //   (async () => {

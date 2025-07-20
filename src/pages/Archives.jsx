@@ -6,6 +6,10 @@ function Archives() {
   const [imagePath, setImagePath] = useState(null);
 
   useEffect(() => {
+    document.title = 'Arkiv | Svensk Form Väst';
+  }, []);
+
+  useEffect(() => {
     (async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/getImageArchivesHero`);
