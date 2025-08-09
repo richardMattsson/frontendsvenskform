@@ -10,6 +10,7 @@ import Button from '../components/Button';
 import IconButton from '@mui/joy/IconButton';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import CircularProgress from '@mui/joy/CircularProgress';
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -114,23 +115,44 @@ function Home() {
 
   return (
     <>
-      {heroData && (
-        <HeroComponent
-          imageUrl={`${BASE_URL}/${heroData[0].filepath.replace(/\\/g, '/')}`}
-          title={heroData[0].title}
-          subtitle={heroData[0].subtitle}
-          description={heroData[0].paragraph}
-          buttonText={heroData[0].buttonText}
-          textColor={heroData[0].textColor}
-        />
-      )}
-
-      {heroData && (
-        <section className="homePageData-section">
-          <div className="homePageData-container">
-            <h4 style={{ whiteSpace: 'pre-line' }}>{heroData[0].paragraph}</h4>
+      {heroData ? (
+        <>
+          <HeroComponent
+            imageUrl={`${BASE_URL}/${heroData[0].filepath.replace(/\\/g, '/')}`}
+            title={heroData[0].title}
+            subtitle={heroData[0].subtitle}
+            description={heroData[0].paragraph}
+            buttonText={heroData[0].buttonText}
+            textColor={heroData[0].textColor}
+          />
+          <section className="homePageData-section">
+            <div className="homePageData-container">
+              <h4 style={{ whiteSpace: 'pre-line' }}>
+                {heroData[0].paragraph}
+              </h4>
+            </div>
+          </section>
+        </>
+      ) : (
+        <>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 50,
+            }}
+          >
+            <CircularProgress
+              variant="soft"
+              size="lg"
+              color="neutral"
+              thickness={4}
+            />
+            <p>Väntar på kontakt med server ... (Tar cirka 30 sekunder)</p>
           </div>
-        </section>
+        </>
       )}
 
       <section style={{ padding: '3vh 6vw' }}>
